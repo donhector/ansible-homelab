@@ -1,0 +1,7 @@
+---
+- name: "Setup the host as a KVM hypervisor"
+  hosts: hypervisors
+  roles:
+    - role: weareinteractive.apt
+      become: yes
+    - role: hello

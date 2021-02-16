@@ -1,0 +1,10 @@
+---
+# tasks file for roles/hello
+
+- name: Sample Hello
+  command: echo "Hello World"
+  register: greeting
+
+- name:
+  ansible.builtin.debug:
+    var: greeting.stdout
