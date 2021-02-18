@@ -2,11 +2,11 @@ xeon ansible_host=xeon.home.lan
 wsl ansible_host=wsl.home.lan
 magicbook ansible_host=magicbook.home.lan
 
-[hypervisors]
+[kvms]
 xeon
 
 [devenvs]
 wsl
 
-[devbox_win]
+[devenv_win]
 magicbook

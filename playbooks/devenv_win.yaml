@@ -1,0 +1,16 @@
+---
+# Playbook to setup a fresh Win 10 as dev environment
+
+- name: "Setup the host as a dev environment"
+  hosts: devenv_win
+
+  ---
+- name: "Install Chocolatey package manager"
+  hosts: devenv_win
+  tasks:
+    - name: Install chocolatey
+      win_chocolatey:
+          name:
+           - chocolatey
+           - chocolatey-core.extension
+          state: present

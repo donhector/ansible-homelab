@@ -1,5 +1,10 @@
 ---
-- src: weareinteractive.apt
-- src: geerlingguy.docker
-# - name: common
-#   src: git+ssh://git@github.com/donhector/ansible-role-common.git
+roles:
+  - src: weareinteractive.apt
+  - src: geerlingguy.docker
+  # - name: common
+  #   src: git+ssh://git@github.com/donhector/ansible-role-common.git
+
+
+#collections:
+  #- name: community.libvirt
