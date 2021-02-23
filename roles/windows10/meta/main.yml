@@ -1,0 +1,17 @@
+galaxy_info:
+  author: donhector
+  description: windows10 laptop setup
+  company: darkenv.com
+
+  license: MIT
+
+  min_ansible_version: 2.10
+
+  platforms:
+    - name: Windows
+      versions:
+        - 10
+
+  galaxy_tags: ['donhector', 'latop', 'windows10', 'office', 'vscode', 'wls2', 'windows']
+
+dependencies: []

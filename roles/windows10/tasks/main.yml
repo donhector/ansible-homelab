@@ -1,0 +1,14 @@
+---
+# tasks file for roles/windows10
+
+- include_tasks: '{{ task }}.yml'
+  when: ansible_os_family == 'Windows'
+  loop:
+    - base
+    - office
+    - wsl2
+    - vscode
+    - windows_terminal
+    - updates
+  loop_control:
+    loop_var: task

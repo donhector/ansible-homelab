@@ -1,0 +1,35 @@
+---
+- name: Install Windows optional features
+  ansible.windows.win_optional_feature:
+    name:
+      - Microsoft-Windows-Subsystem-Linux
+      - VirtualMachinePlatform
+    state: present
+
+- name: Check for pending reboot
+  ansible.windows.win_shell: Test-Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootPending'
+  register: reboot_check
+  changed_when: false
+
+- name: Reboot
+  ansible.windows.win_reboot:
+  when: ("True" in reboot_check.stdout)
+
+- name: Install WSL Kernel update
+  ansible.windows.win_package:
+    path: https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi
+    product_id: '{8D646799-DB00-4000-AE7A-756A05A4F1D8}'
+    state: present
+
+- name: Set default WSL version to 2
+  ansible.windows.win_shell: wsl --set-default-version 2
+
+- name: Create .wslconfig from template
+  ansible.windows.win_template:
+    src: .wslconfig.j2
+    dest: ~\.wslconfig
+
+- name: Install distro
+  chocolatey.chocolatey.win_chocolatey:
+    name: '{{ windows10_wsl2_distro }}'
+    state: present

@@ -1,0 +1,46 @@
+---
+# - name: Install chocolatey
+#   win_chocolatey:
+#     name:
+#       - chocolatey
+#       - chocolatey-core.extension
+#     state: present
+
+# - name: Add chocolatey to PATH
+#   win_path:
+#     name: PATH
+#     elements: '%PROGRAMDATA%\chocolatey\bin'
+#     scope: machine
+#     state: present
+#   register: register_choco_environment_path
+
+# - name: Restart sshd for ENV:PATH
+#   block:
+#     - name: restart sshd to reflect changes to PATH
+#       win_service:
+#         name: sshd
+#         state: restarted
+#       async: 60
+#       poll: 0
+#       notify:
+#         - reset connection
+#       register: register_sshd_restart
+
+#     - name: wait for connectivity to be resumed after sshd restart
+#       async_status:
+#         jid: '{{ register_sshd_restart.ansible_job_id }}'
+#       register: job_result
+#       until: job_result.finished
+#       retries: 60
+#       delay: 1
+
+#   when: ansible_connection == "ssh" and register_choco_environment_path.changed
+
+# - name: flush handlers
+#   meta: flush_handlers
+
+- name: Install user defined packages
+  win_chocolatey:
+    name: '{{ item }}'
+    state: present
+  with_items: '{{ windows10_chocolatey_packages }}'

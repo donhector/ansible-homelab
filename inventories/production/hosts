@@ -1,6 +1,6 @@
 xeon ansible_host=xeon.home.lan
 wsl ansible_host=wsl.home.lan
-magicbook ansible_host=magicbook.home.lan
+magicbook ansible_host=192.168.1.109
 
 [kvms]
 xeon
@@ -8,5 +8,5 @@ xeon
 [devenvs]
 wsl
 
-[devenv_win]
-magicbook
+[windows10]
+192.168.1.109

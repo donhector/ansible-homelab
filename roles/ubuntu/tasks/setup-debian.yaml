@@ -1,0 +1,30 @@
+---
+- name: Install apt dependencies
+  ansible.builtin.package:
+    name:
+      - software-properties-common
+      - apt-transport-https
+    state: latest
+
+- name: Add gpg key
+  ansible.builtin.apt_key:
+    url: "https://packages.microsoft.com/keys/microsoft.asc"
+    state: present
+
+- name: Add vscode repository into sources list using specified filename
+  ansible.builtin.apt_repository:
+    repo: deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main
+    state: present
+    filename: vscode.list
+
+- name: install vscode
+  ansible.builtin.package:
+    name: code
+    state: present
+
+- name: install code extension
+  ansible.builtin.shell: "code --install-extension {{ item }}"
+  become: false
+  register: result
+  loop: "{{ vscode_extensions }}"
+  changed_when: result.stdout is not search('is already installed.')

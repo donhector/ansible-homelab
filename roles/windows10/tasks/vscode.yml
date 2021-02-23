@@ -1,0 +1,22 @@
+---
+- name: Install VScode
+  chocolatey.chocolatey.win_chocolatey:
+    name: '{{ item }}'
+    state: present
+  loop:
+    - vscode
+
+# At this point 'code' is added in the PATH but not yet in effect
+# We could restart the SSH server on the host for the new PATH to be applied but
+# changing directory into the folder where 'code' resides is easier
+
+- name: Install VSCode Extensions
+  ansible.windows.win_shell: code --install-extension {{ item }}
+  args:
+    chdir: '%ProgramFiles%\Microsoft VS Code\bin\'
+  loop: '{{ windows10_vscode_extensions }}'
+  register: result
+  changed_when: result.stdout is not search('is already installed.')
+
+
+# TODO: Settings file

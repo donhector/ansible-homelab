@@ -1,0 +1,43 @@
+---
+# defaults file for roles/windows10
+
+# Tools
+windows10_chocolatey_packages:
+  - 7zip
+  - chocolatey
+  - chocolatey-core.extension
+  - chocolateygui
+  - adobereader
+  - ccleaner
+  - cryptomator
+  - dexpot
+  - googlechrome
+  - google-backup-and-sync
+  - speccy
+  - sublimetext3
+  - vcxsrv
+  - vlc
+
+# VScode: extensions to install
+windows10_vscode_extensions:
+  - ms-vscode-remote.vscode-remote-extensionpack
+  - ms-azuretools.vscode-docker
+  - golang.go
+  - ms-python.python
+  - vscode-icons-team.vscode-icons
+  - pkief.material-icon-theme
+  - redhat.vscode-yaml
+  - zhuangtongfa.material-theme
+  - davidanson.vscode-markdownlint
+  - coenraads.bracket-pair-colorizer-2
+  - ms-kubernetes-tools.vscode-kubernetes-tools
+  - samuelcolvin.jinjahtml
+  - zbr.vscode-ansible
+
+
+# WSL2: Distro to install (from chocolatey)
+windows10_wsl2_distro: wsl-ubuntu-2004
+
+# WSL2: .wslconfig settings
+windows10_wsl2_memory: 4GB
+windows10_wsl2_processors: 2

@@ -1,0 +1,7 @@
+---
+# Playbook to setup a fresh Win 10 as dev environment
+
+- name: "Setup Windows 10 host"
+  hosts: windows10
+  roles:
+    - role: windows10

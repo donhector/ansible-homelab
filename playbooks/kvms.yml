@@ -3,5 +3,5 @@
   hosts: kvms
   roles:
     - role: weareinteractive.apt
-      become: yes
-    - role: hello
+      become: true
+    - role: vscode

@@ -1,0 +1,9 @@
+---
+- name: Install Windows Terminal
+  win_chocolatey:
+    name:
+      - microsoft-windows-terminal
+      - cascadiacode
+    state: present
+
+# TODO: settings file

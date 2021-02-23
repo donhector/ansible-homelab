@@ -1,0 +1,45 @@
+---
+# - name: Download my Office configuration file
+#   ansible.windows.win_get_url:
+#     url: https://gist.githubusercontent.com/donhector/d4fb342f5aaea4a5cd15916361427676/raw/d844662af23173132043093d5a4792ac345cc4a8/configuration.xml
+#     dest: '%TEMP%'
+
+- name: Copy Office deployment configuration file to host
+  ansible.windows.win_copy:
+    src: files/configuration.xml
+    dest: '{{ ansible_facts.env.TEMP }}'
+
+# Office requires admin privileges so we must use "become"
+- name: Install Office
+  chocolatey.chocolatey.win_chocolatey:
+    name:
+      - office365business
+    package_params: '/configpath:"{{ ansible_facts.env.TEMP }}\configuration.xml"'
+    state: present
+  become: true
+  become_method: runas
+  become_user: '{{ ansible_facts.env.USER }}'
+
+- name: Set KMS server for Office VL
+  ansible.windows.win_shell: 'cscript ospp.vbs /sethst:kms.03k.org; cscript ospp.vbs /act'
+  args:
+    chdir: '%PROGRAMFILES%\Microsoft Office\Office16\'
+  register: result
+  failed_when: '"activation successful" not in result.stdout'
+  retries: 3
+  delay: 3
+  become: true
+  become_method: runas
+  become_user: '{{ ansible_facts.env.USER }}'
+
+# - name: Set KMS server for Windows10 VL
+#   ansible.windows.win_shell: 'cscript slmgr.vbs /skms kms.03k.org; cscript slmgr.vbs /ato'
+#   args:
+#     chdir: '%WINDIR%\System32\'
+#   register: result
+#   failed_when: '"activated successfully" not in result.stdout'
+#   retries: 3
+#   delay: 3
+#   become: true
+#   become_method: runas
+#   become_user: '{{ ansible_facts.env.USER }}'

@@ -1,2 +1,3 @@
 ---
 - import_playbook: playbooks/kvms.yaml
+- import_playbook: playbooks/windows10.yaml
