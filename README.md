@@ -4,7 +4,7 @@
 
 This repo contains Ansible code for managing my home machines
 
-The general folder structure can be created with"
+The general folder structure can be created with:
 
 ```bash
 mkdir -p inventories/{production,staging}/{group_vars/group1,host_vars}
