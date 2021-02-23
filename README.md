@@ -43,7 +43,7 @@ roles_path = ~/.ansible/roles:/usr/share/ansible/roles:/etc/ansible/roles:./role
 
 So that roles installed via Galaxy will be placed in `~/.ansible` (ie. outside of source control) while my custom ones will be in `./roles` (ie: source controlled)
 
-At home I have a couple Windows hosts so these require some "pre-work" for Ansible to be able to manage them. Linux hosts are much easier to setup for Ansible.
+At home I have a couple Windows hosts so those require some "pre-work" for Ansible to be able to manage them. Linux hosts are much easier to setup for Ansible.
 
 The Ansible control box will be another Linux host on my network.
 
