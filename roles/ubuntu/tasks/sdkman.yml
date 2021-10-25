@@ -1,0 +1,27 @@
+---
+- name: Check if sdkman is installed
+  ansible.builtin.stat:
+    path: ~/.sdkman
+    get_checksum: false
+  register: sdkman_dir
+
+- name: Install SDKMAN!
+  ansible.builtin.shell: curl -s https://get.sdkman.io | bash -
+  args:
+    warn: no
+  when: not sdkman_dir.stat.exists
+
+- name: Ensure presence of bashrc
+  ansible.builtin.file:
+    state: touch
+    path: ~/.bashrc
+
+- name: Add sdkman in .bashrc
+  ansible.builtin.lineinfile:
+    dest: ~/.bashrc
+    regexp: "\/.sdkman/bin\/sdkman\-init\.sh"
+    line: '[[ -s "~/.sdkman/bin/sdkman-init.sh" && ! $(which sdkman-init.sh) ]] && source "~/.sdkman/bin/sdkman-init.sh"'
+
+- name: Installing gradle
+  # This will read your bash profile file, which would setup sdkman-init.sh.
+  ansible.builtin.command: bash -lc "sdk install gradle {{gradle_version}}"

@@ -1,0 +1,30 @@
+---
+
+- name: Clone asdf
+  ansible.builtin.git:
+    repo: 'https://github.com/asdf-vm/asdf.git'
+    dest: ~/.asdf
+    depth: 1
+    version: '{{ ubuntu_asdf_version }}'
+
+- name: "Source asdf script"
+  template:
+    src: "asdf.sh.j2"
+    dest: "/etc/profile.d/asdf.sh"
+    owner: "root"
+    group: "root"
+    mode: 0755
+  become: true
+
+- name: Get installed asdf plugins
+  command: "bash -lc 'asdf plugin-list'"
+  register: asdf_plugins
+  ignore_errors: yes
+
+- name: Add asdf plugins
+  command: "bash -lc 'asdf plugin-add {{ item }}'"
+  when: "item|string not in asdf_plugins.stdout_lines"
+  with_items:
+    - erlang
+    - elixir
+    - ruby

@@ -1,2 +1,5 @@
 ---
 # defaults file for roles/ubuntu
+ubuntu_asdf_version: v0.8.0
+ubuntu_asdf_plugins:
+  - 

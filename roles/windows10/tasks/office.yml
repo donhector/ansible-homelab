@@ -27,7 +27,7 @@
   register: result
   failed_when: '"activation successful" not in result.stdout'
   retries: 3
-  delay: 3
+  delay: 5
   become: true
   become_method: runas
   become_user: '{{ ansible_facts.env.USER }}'

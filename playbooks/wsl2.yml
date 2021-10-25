@@ -1,4 +1,8 @@
 ---
 # Playbook to setup a Ubuntu Distro in WSL2
 
-# TODO
+- name: "Setup Ubuntu 20.04 based WSL2 distro"
+  hosts: wsl2
+  roles:
+    - role: ubuntu-wsl2
+  

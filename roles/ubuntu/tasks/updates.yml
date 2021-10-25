@@ -1,0 +1,32 @@
+---
+- name: Update apt-get repo and cache
+  ansible.builtin.apt:
+    update_cache: true
+    force_apt_get: true
+    cache_valid_time: 3600
+
+- name: Upgrade all apt packages
+  ansible.builtin.apt:
+    upgrade: dist
+    force_apt_get: true
+
+- name: Clean up
+  ansible.builtin.apt:
+    autoremove: true
+    autoclean: true
+
+- name: Check if a reboot is needed
+  ansible.builtin.stat:
+    path: /var/run/reboot-required
+    get_checksum: false
+  register: reboot_required
+
+- name: Reboot the server
+  reboot:
+    msg: "Reboot initiated by Ansible due to Apt updates"
+    connect_timeout: 5
+    reboot_timeout: 300
+    pre_reboot_delay: 0
+    post_reboot_delay: 30
+    test_command: uptime
+  when: reboot_required.stat.exists

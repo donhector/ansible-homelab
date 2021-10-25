@@ -69,3 +69,11 @@ In my case I'll leverage my Github account to pull my own public key and then au
 OpenSSH on Windows supports two types of shells: the traditional `cmd` and the newer `powershell`. `cmd` is at the time of writing the most compatible and the one that I use in my playbooks.
 
 I've captured all the above pre-requisites in a Powershell [script](setup_ssh.ps1), which must be executed in an elevated Powershell console.
+
+Once the SSH setup is complete, from your Ansible control box, test that everything is working with:
+
+```bash
+ansible all -i <windows_host_ip>, -m win_ping -u <windows_host_user> -e ansible_shell_type=cmd -e ansible_connection=ssh
+```
+
+_NOTE_: `-e ansible_connection=ssh` is not stricly needed as it is the default connection type in Ansible.

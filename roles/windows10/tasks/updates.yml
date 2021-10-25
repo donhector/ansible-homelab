@@ -1,13 +1,51 @@
 ---
-- name: Upgrade installed choco packages
-  chocolatey.chocolatey.win_chocolatey:
-    name: all
-    state: latest
+- name: Create timestamp
+  ansible.builtin.command: date +%Y%m%d%H%M%S
+  delegate_to: localhost
+  register: _result_timestamp
 
-- name: Install all security, critical, and rollup updates without a scheduled task
+- name: Create logs dir
+  ansible.builtin.file:
+    path: "/tmp/ansible_logs/"
+    state: directory
+  delegate_to: localhost
+
+- name: Chocolatey Update
+  block:
+    - name: Update packages
+      chocolatey.chocolatey.win_chocolatey:
+        name: all
+        state: latest
+  always:
+    - name: Fetch remote Chocolatey update log file
+      ansible.builtin.fetch:
+        src: "{{ ansible_facts.env.ChocolateyInstall }}/logs/chocolatey.log"
+        dest: "/tmp/ansible_logs/chocolatey_{{ inventory_hostname }}_{{ _result_timestamp.stdout }}.log"
+        flat: true
+
+- name: Wndows Update
   ansible.windows.win_updates:
     category_names:
       - SecurityUpdates
       - CriticalUpdates
-      - UpdateRollup
-    reboot: true
+      - UpdateRollups
+    log_path: "{{ ansible_facts.env.TEMP }}/windowsupdate_{{ inventory_hostname }}_{{ _result_timestamp.stdout }}.log"
+    state: installed
+    use_scheduled_task: true
+  register: _result_win_update
+
+- name: Windows Update result
+  debug:
+    var: _result_win_update
+    verbosity: 0
+
+- name: Fetch remote update log file
+  ansible.builtin.fetch:
+    src: "{{ ansible_facts.env.TEMP }}/windowsupdate_{{ inventory_hostname }}_{{ _result_timestamp.stdout }}.log"
+    dest: "/tmp/ansible_logs/"
+    flat: true
+
+- name: Reboot if required
+  win_reboot:
+    reboot_timeout: 3600
+  when: _result_win_update.reboot_required

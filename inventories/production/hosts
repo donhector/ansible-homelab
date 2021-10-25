@@ -1,6 +1,21 @@
-xeon ansible_host=xeon.home.lan
-wsl ansible_host=wsl.home.lan
+xeon ansible_host=xeon.lan
+wsl ansible_host=wsl.lan
 magicbook ansible_host=192.168.1.109
+localhost	ansible_connection=local
+
+### Linux based hosts
+
+[linux]
+
+[linux:children]
+ubuntu
+debian
+
+[ubuntu]
+ubuntuhost01
+
+[debian]
+xeon
 
 [kvms]
 xeon
@@ -8,5 +23,15 @@ xeon
 [devenvs]
 wsl
 
-[windows10]
-192.168.1.109
+
+### WINDOWS based hosts
+[windows]
+
+[windows:children]
+win10
+
+[win10]
+magicbook
+
+
+

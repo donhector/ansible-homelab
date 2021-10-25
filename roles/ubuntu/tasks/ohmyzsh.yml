@@ -1,0 +1,9 @@
+---
+- name: ZSH - Ubuntu - Install zsh with Apt
+  become: true
+  ansible.builtin.apt:
+     name: zsh
+     state: latest
+     update_cache: true
+     cache_valid_time: 3600
+  when: ansible_distribution == 'Ubuntu'

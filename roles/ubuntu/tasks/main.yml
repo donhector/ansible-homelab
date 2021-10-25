@@ -2,6 +2,6 @@
 # tasks file for roles/ubuntu
 
 - block:
-  - include_tasks: setup-debian.yaml
+  - include_tasks: setup-debian.yml
     when: ansible_os_family == 'Debian'
   become: true
